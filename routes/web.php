@@ -22,7 +22,9 @@ use App\Http\Controllers\ProductController;
 Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::get('/trang-chu', [HomeController::class, 'index'])->name('trang-chu');
 //danh muc san pham trang chu
-Route::get('/danh-muc-san-pham/{category_id}', [HomeController::class, 'show_category_product'])->name('danh-muc-san-pham');
+Route::get('/danh-muc-san-pham/{category_id}', [CategoryProduct::class, 'show_category_home'])->name('danh-muc-san-pham');
+//chi tiet san pham trang chu
+Route::get('/chi-tiet-san-pham/{product_id}', [ProductController::class, 'details_product'])->name('chi-tiet-san-pham');
 
 
 

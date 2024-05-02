@@ -5,6 +5,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryProduct;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 
 
 /*
@@ -53,3 +55,13 @@ Route::get('/active-product/{product_id}', [ProductController::class, 'active_pr
 Route::get('/edit-product/{product_id}', [ProductController::class, 'edit_product'])->name('edit-product');
 Route::get('/delete-product/{product_id}', [ProductController::class, 'delete_product'])->name('delete-product');
 Route::post('/update-product/{product_id}', [ProductController::class, 'update_product'])->name('update-product');
+//cart
+Route::post('/save-cart', [CartController::class, 'save_cart'])->name('save-cart');
+Route::get('/show-cart', [CartController::class, 'show_cart'])->name('show-cart');
+Route::get('/delete-to-cart/{rowId}', [CartController::class, 'delete_to_cart'])->name('delete-to-cart');
+Route::get('/update-cart-quantity/{rowId}/{qty}', [CartController::class, 'update_cart_quantity'])->name('update-cart-quantity');
+
+//checkout
+Route::get('/login-checkout', [CheckoutController::class, 'login_checkout'])->name('login-checkout');
+Route::post('/add-customer', [CheckoutController::class, 'add_customer'])->name('add-customer');
+Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');

@@ -35,15 +35,19 @@
             <h2>{{$value->product_name}}</h2>
             <p>Mã ID:{{$value->product_id}}</p>
             <img src="images/product-details/rating.png" alt="" />
-            <span>
-                <span>{{number_format($value->product_price).' '.'VND'}}</span>
-                <label>Quantity:</label>
-                <input type="number" min ="1" value="1" />
-                <button type="button" class="btn btn-fefault cart">
-                    <i class="fa fa-shopping-cart"></i>
-                    Thêm giỏ hàng
-                </button>
-            </span>
+            <form action="{{URL::to('/save-cart')}}" method="POST">
+                {{csrf_field()}}
+                <span>
+                    <span>{{number_format($value->product_price).' '.'VND'}}</span>
+                    <label>Số lượng:</label>
+                    <input name="qty" type="number" min ="1" value="1" />
+                    <input name="productid_hidden" type="hidden" value="{{$value->product_id}}" />
+                    <button type="submit" class="btn btn-fefault cart">
+                        <i class="fa fa-shopping-cart"></i>
+                        Thêm giỏ hàng
+                    </button>
+                </span>
+            </form>
             <p><b>Tình trạng:</b>Còn hàng </p>
             <p><b>Điều kiện:</b> Hoa tươi</p>
             <p> <b>Danh mục:</b> {{$value->category_name}}</p>

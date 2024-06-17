@@ -86,11 +86,30 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="leftside-navigation">
             <ul class="sidebar-menu" id="nav-accordion">
                 <li>
-                    <a class="active" href="{{URL::to('/dashboard')}}">
+                    <a class="active" href="{{URL::to('/manage-banner')}}">
                         <i class="fa fa-dashboard"></i>
                         <span>Tổng quan</span>
                     </a>
                 </li>
+				<li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Slider</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="{{URL::to('/manage-slider')}}">Liệt kê slider</a></li>
+                        <li><a href="{{URL::to('/add-slider')}}">Thêm slider</a></li>
+                    </ul>
+                </li>
+				<li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Đơn hàng</span>
+                    </a>
+                    <ul class="sub">
+						<li><a href="{{URL::to('/manage-order')}}">Quản lý đơn hàng</a></li>
+                    </ul>
+				</li>
                 
                 <li class="sub-menu">
                     <a href="javascript:;">
@@ -100,6 +119,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <ul class="sub">
 						<li><a href="{{URL::to('/add-category-product')}}">Thêm danh mục sản phẩm</a></li>
 						<li><a href="{{URL::to('/all-category-product')}}">Liệt kê danh mục sản phẩm</a></li>
+					
+                        
+                    </ul>
+				</li>
+				<li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Danh mục bài viết</span>
+                    </a>
+                    <ul class="sub">
+						<li><a href="{{URL::to('/add-category-post')}}">Thêm danh mục bài viết</a></li>
+						<li><a href="{{URL::to('/all-category-post')}}">Liệt kê danh mục bài viết</a></li>
 					
                         
                     </ul>
@@ -129,11 +160,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
     </section>
  <!-- footer -->
-		  <div class="footer">
-			<div class="wthree-copyright">
-			  <p>© 2017 Visitors. All rights reserved | Design by <a href="http://w3layouts.com">W3layouts</a></p>
-			</div>
-		  </div>
+		 
   <!-- / footer -->
 </section>
 <!--main content end-->
@@ -143,6 +170,24 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{asset('backend/js/scripts.js')}}"></script>
 <script src="{{asset('backend/js/jquery.slimscroll.js')}}"></script>
 <script src="{{asset('backend/js/jquery.nicescroll.js')}}"></script>
+<script src="{{asset('backend/ckeditor/ckeditor.js')}}"></script>
+<!-- Tải thư viện jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Tải thư viện jQuery Form Validator -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.79/jquery.form-validator.min.js"></script>
+
+<script type="text/javascript">
+	$.validate({
+		
+	});
+</script>
+
+<script >
+	CKEDITOR.replace( 'ckeditor1' );
+	CKEDITOR.replace( 'ckeditor' );
+
+</script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="('js/flot-chart/excanvas.min.js"></script><![endif]-->
 <script src="{{asset('backend/js/jquery.scrollTo.js')}}"></script>
 <!-- morris JavaScript -->	

@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests;
+use App\Http\Requests\ProductRequest;
+use App\Models\Slider;
+use App\Models\CategoryPostModel;
 
 
 class ProductController extends Controller
@@ -106,6 +109,8 @@ class ProductController extends Controller
         return Redirect::to('all-product');
     }
     public function details_product($product_id){
+        $category_post = CategoryPostModel::orderBy('cate_post_id','DESC')->get();
+        $slider = DB::table('tbl_slider')->where('slider_status', '1')->orderby('slider_id', 'desc')->limit(4)->get();
         $cate_product = DB::table('tbl_category_product')->where('category_status', '1')->orderby('category_id', 'desc')->get();
         $details_product = DB::table('tbl_product')->join('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
         ->where('tbl_product.product_id', $product_id)->get();
@@ -116,6 +121,6 @@ class ProductController extends Controller
         ->where('tbl_category_product.category_id', $category_id)->whereNotIn('tbl_product.product_id', [$product_id])->get();
 
         return view('pages.product.show_details')->with('category', $cate_product)
-        ->with('product__details', $details_product) ->with('related', $related_product);
+        ->with('product__details', $details_product) ->with('related', $related_product)->with('slider', $slider)->with('category_post', $category_post);
     }
 }

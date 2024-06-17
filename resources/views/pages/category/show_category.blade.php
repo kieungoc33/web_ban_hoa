@@ -16,7 +16,17 @@
                     <img src="{{URL::to('uploads/product/'.$product->product_image)}}" alt="" style="width: 300px; height: 200px;" />
                     <h2>{{number_format($product->product_price).' '.'VND'}}</h2>
                     <p>{{$product->product_name}}</p>
-                    <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm giỏ hàng</a>
+                    <form action="{{URL::to('/save-cart')}}" method="POST">
+                        @csrf
+                        <input type="hidden" name="productid_hidden" value="{{$product->product_id}}">
+                        <input type="hidden" name="product_name" value="{{$product->product_name}}">
+                        <input type="hidden" name="product_image" value="{{$product->product_image}}">
+                        <input type="hidden" name="product_price" value="{{$product->product_price}}">
+                        <input type="hidden" name="qty" value="1">
+                        <button type="submit" class="btn btn-default add-to-cart">
+                            <i class="fa fa-shopping-cart"></i> Thanh toán
+                        </button>
+                    </form>
                 </div>                
             </div>
             <div class="choose">

@@ -6,7 +6,6 @@
             <ol class="breadcrumb">
                 <li><a href="{{URL::to('/')}}">Trang chủ</a></li>
                 <li class="active">Giỏ hàng của bạn</li>
-              
             </ol>
         </div>
         <div class="table-responsive cart_info">
@@ -17,7 +16,8 @@
                 <thead>
                     <tr class="cart_menu">
                         <td class="image">Hình ảnh</td>
-                        <td class="description">Mô tả</td>
+                        <td class="description" style="text-align: center;">Tên sản phẩm</td>
+
                         <td class="price">Giá</td>
                         <td class="quantity">Số lượng</td>
                         <td class="total">Tổng tiền</td>
@@ -30,10 +30,10 @@
                         <td class="cart_product">
                             <a href=""><img src="{{URL::to('uploads/product/'.$v_content->options->image)}}" alt="" style="height: 100px; width: 100px;"></a>
                         </td>
-                        <td class="cart_description">
+                        <td class="cart_description" style="text-align: center;">
                             <h4><a href="">{{$v_content->name}}</a></h4>
-                            <p>Web ID: 1089772</p>
                         </td>
+                        
                         <td class="cart_price">
                             <p>{{number_format($v_content->price).' '.'VND'}}</p>
                         </td>
@@ -73,7 +73,19 @@
                         <li>Phí vận chuyển <span>Free</span></li>
                         <li>Thành tiền <span>{{Cart::total(0, ',','.').' '.'VND'}}</span></li>
                     </ul>
-                        <a class="btn btn-default check_out" href="{{URL::to('/login-checkout')}}">Thanh toán</a>
+                        <?php
+                            $customer_id = Session::get('customer_id');
+                            if ($customer_id != NULL) {
+                        ?>
+                            <a class="btn btn-default check_out" href="{{URL::to('/checkout')}}">Thanh toán</a>
+                        <?php
+                            } else {
+                        ?>
+                            <a class="btn btn-default check_out" href="{{URL::to('/login-checkout')}}">Thanh toán</a>
+                        <?php
+                            }
+                        ?>
+
                 </div>
             </div>
         </div>

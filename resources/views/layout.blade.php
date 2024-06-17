@@ -13,6 +13,7 @@
     <link href="{{asset('frontend/css/animate.css')}}" rel="stylesheet">
 	<link href="{{asset('frontend/css/main.css')}}" rel="stylesheet">
 	<link href="{{asset('frontend/css/responsive.css')}}" rel="stylesheet">
+	<link href="{{asset('frontend/css/sweetalert.css')}}" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
@@ -51,7 +52,6 @@
 				</div>
 			</div>
 		</div><!--/header_top-->
-		
 		<div class="header-middle"><!--header-middle-->
 			<div class="container">
 				<div class="row">
@@ -59,38 +59,57 @@
 						<div class="logo pull-left">
 							<a href="index.html"><img src="frontend/images/home/logo.png" alt="" /></a>
 						</div>
-						<div class="btn-group pull-right">
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-									USA
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li><a href="#">Canada</a></li>
-									<li><a href="#">UK</a></li>
-								</ul>
-							</div>
-							
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-									DOLLAR
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li><a href="#">Canadian Dollar</a></li>
-									<li><a href="#">Pound</a></li>
-								</ul>
-							</div>
-						</div>
 					</div>
 					<div class="col-sm-8">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-user"></i> Tài khoản</a></li>
+								
 								<li><a href="#"><i class="fa fa-star"></i> Yêu thích</a></li>
+
+								<?php
+								$customer_id = Session::get('customer_id');
+								$shipping_id = Session::get('shipping_id');
+								if($customer_id!=NULL && $shipping_id==NULL){
+								?>
 								<li><a href="{{URL::to('/checkout')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
-								<li><a href="{{URL::to('/show-cart')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li>
-								<li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-lock"></i>Đăng nhập</a></li>
+								<?php
+								}elseif($customer_id!=NULL && $shipping_id!=NULL){
+								?>
+								<li><a href="{{URL::to('/payment')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
+								<?php
+								}else{
+								?>
+								<li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
+								<?php
+								}
+								?>
+								
+								<li>
+									<a href="{{ URL::to('/show-cart') }}">
+										<i class="fa fa-shopping-cart"></i> 
+										Giỏ hàng 
+										@php
+											$cartCount = Cart::count();
+										@endphp
+										@if($cartCount > 0)
+											<span class="badge">{{ $cartCount }}</span>
+										@endif
+									</a>
+								</li>
+								
+								
+								<?php
+								$customer_id = Session::get('customer_id');
+								if($customer_id!=NULL){
+								?>
+								<li><a href="{{URL::to('/logout-checkout')}}"><i class="fa fa-lock"></i> Đăng xuất</a></li>
+								<?php
+								}else{
+								?>
+								<li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-lock"></i> Đăng nhập</a></li>
+								<?php
+								}
+								?>
 							</ul>
 						</div>
 					</div>
@@ -101,7 +120,7 @@
 		<div class="header-bottom"><!--header-bottom-->
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-9">
+					<div class="col-sm-8">
 						<div class="navbar-header">
 							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 								<span class="sr-only">Toggle navigation</span>
@@ -113,27 +132,38 @@
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
 								<li><a href="{{URL::to('/trang-chu')}}" class="active">Trang chủ</a></li>
-								<li class="dropdown"><a href="#">Sản phẩm<i class="fa fa-angle-down"></i></a>
+								<li class="dropdown">
+									<a href="#">Sản phẩm<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         <li><a href="shop.html">Products</a></li>
-										<li><a href="product-details.html">Product Details</a></li> 
-										<li><a href="checkout.html">Checkout</a></li> 
-										<li><a href="cart.html">Cart</a></li> 
-										<li><a href="login.html">Login</a></li> 
                                     </ul>
                                 </li> 
 								<li class="dropdown"><a href="#">Tin tức<i class="fa fa-angle-down"></i></a>
+									<ul role="menu" class="sub-menu">
+										@foreach($category_post as $key => $cate)
+										<li><a href="{{URL::to('/danh-muc-bai-viet/'.$cate->cate_post_slug)}}">{{$cate->cate_post_name}}</a></li>
+										@endforeach
+
+									</ul>
                                     
                                 </li> 
-								<li><a href="404.html">Giỏ hàng</a></li>
+								<li><a href="{{URL::to('/show-cart')}}">Giỏ hàng <span class="cart-quantity">(</span><span class="cart-quantity-number" style="color: red;">{{ Cart::count() }}</span><span class="cart-quantity">)</span></a></li>
+
+
 								<li><a href="contact-us.html">Liên hệ</a></li>
+								
+								
 							</ul>
 						</div>
 					</div>
-					<div class="col-sm-3">
+					<div class="col-sm-4">
+						<form action="{{URL::to('/tim-kiem')}}" method="POST">
+							{{csrf_field()}}
 						<div class="search_box pull-right">
-							<input type="text" placeholder="Search"/>
+							<input type="text" name ="keywords_submit" placeholder="Tìm kiếm sản phẩm"/>
+							<input type="submit" style="margin-top: 0" name="search_items" class="btn btn-primary btn-sm" value="Tìm kiếm"/>
 						</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -150,56 +180,38 @@
 							<li data-target="#slider-carousel" data-slide-to="1"></li>
 							<li data-target="#slider-carousel" data-slide-to="2"></li>
 						</ol>
+						<style type="text/css">
+                            img.img.img-responsive.img-slider {
+                                height: 350px;
+                            }
+                        </style>
+						<div id="slider-carousel" class="carousel slide" data-ride="carousel" data-interval="3000">
+							<div class="carousel-inner">
+								@php 
+									$i = 0;
+								@endphp
+								@foreach($slider as $key => $slide)
+									@php 
+										$i++;
+									@endphp
+									<div class="item {{$i==1 ? 'active' : '' }}">
+										
+										<div class="col-sm-12">
+											<img alt="{{$slide->slider_desc}}" src="{{asset('uploads/slider/'.$slide->slider_image)}}" height="200" width="100%" class="img img-responsive img-slider">
+											
+										</div>
+									</div>
+								@endforeach  
+						 </div>
 						
-						<div class="carousel-inner">
-							<div class="item active">
-								<div class="col-sm-6">
-									<h1><span>E</span>-SHOPPER</h1>
-									<h2>Free E-Commerce Template</h2>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-									<button type="button" class="btn btn-default get">Get it now</button>
-								</div>
-								<div class="col-sm-6">
-									<img src="frontend/images/home/girl1.jpg" class="girl img-responsive" alt="" />
-									<img src="frontend/images/home/pricing.png"  class="pricing" alt="" />
-								</div>
-							</div>
-							<div class="item">
-								<div class="col-sm-6">
-									<h1><span>E</span>-SHOPPER</h1>
-									<h2>100% Responsive Design</h2>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-									<button type="button" class="btn btn-default get">Get it now</button>
-								</div>
-								<div class="col-sm-6">
-									<img src="frontend/images/home/girl2.jpg" class="girl img-responsive" alt="" />
-									<img src="frontend/images/home/pricing.png"  class="pricing" alt="" />
-								</div>
-							</div>
-							
-							<div class="item">
-								<div class="col-sm-6">
-									<h1><span>E</span>-SHOPPER</h1>
-									<h2>Free Ecommerce Template</h2>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-									<button type="button" class="btn btn-default get">Get it now</button>
-								</div>
-								<div class="col-sm-6">
-									<img src="frontend/images/home/girl3.jpg" class="girl img-responsive" alt="" />
-									<img src="frontend/images/home/pricing.png" class="pricing" alt="" />
-								</div>
-							</div>
-							
+							<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+								<i class="fa fa-angle-left"></i>
+							</a>
+							<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+								<i class="fa fa-angle-right"></i>
+							</a>
 						</div>
 						
-						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
-							<i class="fa fa-angle-left"></i>
-						</a>
-						<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
-							<i class="fa fa-angle-right"></i>
-						</a>
-					</div>
-					
 				</div>
 			</div>
 		</div>
@@ -233,85 +245,6 @@
 	</section>
 	
 	<footer id="footer"><!--Footer-->
-		<div class="footer-top">
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-2">
-						<div class="companyinfo">
-							<h2><span>e</span>-shopper</h2>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor</p>
-						</div>
-					</div>
-					<div class="col-sm-7">
-						<div class="col-sm-3">
-							<div class="video-gallery text-center">
-								<a href="#">
-									<div class="iframe-img">
-										<img src="frontend/images/home/iframe1.png" alt="" />
-									</div>
-									<div class="overlay-icon">
-										<i class="fa fa-play-circle-o"></i>
-									</div>
-								</a>
-								<p>Circle of Hands</p>
-								<h2>24 DEC 2014</h2>
-							</div>
-						</div>
-						
-						<div class="col-sm-3">
-							<div class="video-gallery text-center">
-								<a href="#">
-									<div class="iframe-img">
-										<img src="frontend/images/home/iframe2.png" alt="" />
-									</div>
-									<div class="overlay-icon">
-										<i class="fa fa-play-circle-o"></i>
-									</div>
-								</a>
-								<p>Circle of Hands</p>
-								<h2>24 DEC 2014</h2>
-							</div>
-						</div>
-						
-						<div class="col-sm-3">
-							<div class="video-gallery text-center">
-								<a href="#">
-									<div class="iframe-img">
-										<img src="frontend/images/home/iframe3.png" alt="" />
-									</div>
-									<div class="overlay-icon">
-										<i class="fa fa-play-circle-o"></i>
-									</div>
-								</a>
-								<p>Circle of Hands</p>
-								<h2>24 DEC 2014</h2>
-							</div>
-						</div>
-						
-						<div class="col-sm-3">
-							<div class="video-gallery text-center">
-								<a href="#">
-									<div class="iframe-img">
-										<img src="frontend/images/home/iframe4.png" alt="" />
-									</div>
-									<div class="overlay-icon">
-										<i class="fa fa-play-circle-o"></i>
-									</div>
-								</a>
-								<p>Circle of Hands</p>
-								<h2>24 DEC 2014</h2>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-3">
-						<div class="address">
-							<img src="frontend/images/home/map.png" alt="" />
-							<p>505 S Atlantic Ave Virginia Beach, VA(Virginia)</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
 		
 		<div class="footer-widget">
 			<div class="container">
@@ -398,5 +331,55 @@
         <script src="{{asset('frontend/js/price-range.js')}}"></script>
         <script src="{{asset('frontend/js/jquery.prettyPhoto.js')}}"></script>
         <script src="{{asset('frontend/js/main.js')}}"></script>
+		<script src="{{asset('frontend/js/sweetalert.min.js')}}"></script>
+
+
+
+		{{--<script type="text/javascript">
+			$(document).ready(function(){
+				$('.add-to-cart').click(function(){
+	
+					var id = $(this).data('id_product');
+					// alert(id);
+					var cart_product_id = $('.cart_product_id_' + id).val();
+					var cart_product_name = $('.cart_product_name_' + id).val();
+					var cart_product_image = $('.cart_product_image_' + id).val();
+					//var cart_product_quantity = $('.cart_product_quantity_' + id).val();
+					var cart_product_price = $('.cart_product_price_' + id).val();
+					var cart_product_qty = $('.cart_product_qty_' + id).val();
+					var _token = $('input[name="_token"]').val();
+					//if(parseInt(cart_product_qty)>parseInt(cart_product_quantity)){
+						//alert('Làm ơn đặt nhỏ hơn ' + cart_product_quantity);
+					//}else{
+	
+						$.ajax({
+							url: '{{url('/add-cart-ajax')}}',
+							method: 'POST',
+							data:{cart_product_id:cart_product_id,cart_product_name:cart_product_name,cart_product_image:cart_product_image,cart_product_price:cart_product_price,cart_product_qty:cart_product_qty,_token:_token},
+							success:function(){
+	
+								swal({
+										title: "Đã thêm sản phẩm vào giỏ hàng",
+										text: "Bạn có thể mua hàng tiếp hoặc tới giỏ hàng để tiến hành thanh toán",
+										showCancelButton: true,
+										cancelButtonText: "Xem tiếp",
+										confirmButtonClass: "btn-success",
+										confirmButtonText: "Đi đến giỏ hàng",
+										closeOnConfirm: false
+									},
+									function() {
+										window.location.href = "{{url('/gio-hang')}}";
+									});
+	
+							}
+	
+						});
+					//}
+	
+					
+				});
+			});
+		</script>
+		--}}
 </body>
 </html>

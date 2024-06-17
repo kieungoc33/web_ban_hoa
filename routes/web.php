@@ -7,6 +7,8 @@ use App\Http\Controllers\CategoryProduct;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\SliderController;
+use App\Http\Controllers\CategoryPost;
 
 
 /*
@@ -23,6 +25,7 @@ use App\Http\Controllers\CheckoutController;
 
 Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::get('/trang-chu', [HomeController::class, 'index'])->name('trang-chu');
+Route::post('/tim-kiem', [HomeController::class, 'search'])->name('tim-kiem');
 //danh muc san pham trang chu
 Route::get('/danh-muc-san-pham/{category_id}', [CategoryProduct::class, 'show_category_home'])->name('danh-muc-san-pham');
 //chi tiet san pham trang chu
@@ -36,6 +39,11 @@ Route::get('/dashboard', [AdminController::class, 'show_dashboard'])->name('dash
 Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
 Route::post('/admin-dashboard', [AdminController::class, 'dashboard'])->name('admin-dashboard');
 
+//category post
+Route::get('/add-category-post', [CategoryPost::class, 'add_category_post'])->name('add-category-post');
+Route::post('/save-category-post', [CategoryPost::class, 'save_category_post'])->name('save-category-post');
+Route::get('/all-category-post', [CategoryPost::class, 'all_category_post'])->name('all-category-post');
+Route::get('/danh-muc-bai-viet/{category_post_slug}', [CategoryPost::class, 'danh_muc_bai_viet'])->name('danh-muc-bai-viet');
 //category product
 Route::get('/add-category-product', [CategoryProduct::class, 'add_category_product'])->name('add-category-product');
 Route::get('/all-category-product', [CategoryProduct::class, 'all_category_product'])->name('all-category-product');
@@ -60,8 +68,33 @@ Route::post('/save-cart', [CartController::class, 'save_cart'])->name('save-cart
 Route::get('/show-cart', [CartController::class, 'show_cart'])->name('show-cart');
 Route::get('/delete-to-cart/{rowId}', [CartController::class, 'delete_to_cart'])->name('delete-to-cart');
 Route::get('/update-cart-quantity/{rowId}/{qty}', [CartController::class, 'update_cart_quantity'])->name('update-cart-quantity');
-
+Route::post('/add-cart-ajax', [CartController::class, 'add_cart_ajax'])->name('add-cart-ajax');
+Route::get('/gio-hang', [CartController::class, 'gio_hang'])->name('gio-hang');
 //checkout
 Route::get('/login-checkout', [CheckoutController::class, 'login_checkout'])->name('login-checkout');
 Route::post('/add-customer', [CheckoutController::class, 'add_customer'])->name('add-customer');
 Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+Route::post('/save-checkout-customer', [CheckoutController::class, 'save_checkout_customer'])->name('save-checkout-customer');
+Route::get('/payment', [CheckoutController::class, 'payment'])->name('payment');
+Route::get('/logout-checkout', [CheckoutController::class, 'logout_checkout'])->name('logout-checkout');
+Route::post('/login-customer', [CheckoutController::class, 'login_customer'])->name('login-customer');
+Route::post('/order-place', [CheckoutController::class, 'order_place'])->name('order-place');
+
+//order
+Route::get('/manage-order', [CheckoutController::class, 'manage_order'])->name('manage-order');
+Route::get('/view-order/{orderId}', [CheckoutController::class, 'view_order'])->name('view-order');
+Route::get('/delete-order/{orderId}', [CheckoutController::class, 'delete_order'])->name('delete-order');
+
+//send mail
+Route::get('/send-mail', [HomeController::class, 'send_mail'])->name('send-mail');
+
+//slider
+Route::get('/add-slider', [SliderController::class, 'add_slider'])->name('add-slider');
+Route::get('/manage-slider', [SliderController::class, 'manage_slider'])->name('manage-slider');
+Route::post('/insert-slider', [SliderController::class, 'insert_slider'])->name('insert-slider');
+Route::get('/unactive-slide/{slide_id}', [SliderController::class, 'unactive_slide'])->name('unactive-slide');
+Route::get('/active-slide/{slide_id}', [SliderController::class, 'active_slide'])->name('active-slide');
+Route::get('/delete-slide/{slide_id}', [SliderController::class, 'delete_slide'])->name('delete-slide');
+Route::get('/edit-slide/{slide_id}', [SliderController::class, 'edit_slide'])->name('edit-slide');
+Route::post('/update-slide/{slide_id}', [SliderController::class, 'update_slide'])->name('update-slide');
+

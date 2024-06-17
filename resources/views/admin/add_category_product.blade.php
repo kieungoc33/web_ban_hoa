@@ -19,12 +19,12 @@
                             {{csrf_field()}}
                         <div class="form-group">
                             <label for="exampleInputEmail1">Tên Danh Mục</label>
-                            <input type="text" name="category_product_name" class="form-control" id="exampleInputEmail1" placeholder="Tên danh mục">
+                            <input type="text" name="category_product_name" class="form-control" id="exampleInputEmail1" placeholder="Tên danh mục" required>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Mô tả danh mục</label>
                             <textarea style="resize: none" rows="8"
-                             type="password" class="form-control" name = "category_product_desc" id="exampleInputPassword1" placeholder="Mô tả danh mục"></textarea>
+                             type="password" class="form-control" name = "category_product_desc" id="exampleInputPassword1" placeholder="Mô tả danh mục" required></textarea>
 
                         </div>
                         <div class="form-group">
